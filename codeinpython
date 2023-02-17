@@ -1,0 +1,28 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# Load data
+sales_data = pd.read_csv('sales_data.csv')
+
+# Data cleaning and preparation
+sales_data.dropna(inplace=True) # Remove any rows with missing data
+X = sales_data.drop(['Sales'], axis=1) # Features
+y = sales_data['Sales'] # Target variable
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42) # Split data into training and testing sets
+
+# Model training
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Model evaluation
+train_score = model.score(X_train, y_train)
+test_score = model.score(X_test, y_test)
+print(f'Training score: {train_score}')
+print(f'Testing score: {test_score}')
+
+# Prediction
+new_data = pd.DataFrame({'TV': [150, 200, 250], 'Radio': [20, 30, 40], 'Newspaper': [10, 20, 30]})
+predictions = model.predict(new_data)
+print(predictions)
